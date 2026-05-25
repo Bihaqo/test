@@ -1,0 +1,5 @@
+PulseWatch.xcodeproj/
+build/
+DerivedData/
+*.xcresult
+*.xcuserstate
