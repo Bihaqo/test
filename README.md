@@ -14,4 +14,4 @@ open PulseWatch.xcodeproj
 
 ## GitHub Actions Build
 
-The `iOS Build` workflow runs on a macOS runner, generates the Xcode project, and builds the app for the generic iOS Simulator destination with code signing disabled. It is intentionally build/test validation, not an interactive simulator session.
+The `iOS Build` workflow runs on a macOS runner, generates the Xcode project, builds the app for the generic iOS Simulator destination with code signing disabled, and uploads a zipped simulator `.app` artifact. It is intentionally build/test validation, not an interactive simulator session or a signed physical-device install.

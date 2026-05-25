@@ -31,3 +31,21 @@ jobs:
             -destination 'generic/platform=iOS Simulator' \
             -derivedDataPath build/DerivedData \
             CODE_SIGNING_ALLOWED=NO
+
+      - name: Package simulator app
+        shell: bash
+        run: |
+          set -euo pipefail
+          app_path="$(find build/DerivedData/Build/Products -name 'PulseWatch.app' -type d | head -n 1)"
+          if [[ -z "$app_path" ]]; then
+            echo "PulseWatch.app was not produced."
+            exit 1
+          fi
+          mkdir -p build/artifacts
+          ditto -c -k --keepParent "$app_path" build/artifacts/PulseWatch-simulator-app.zip
+
+      - name: Upload simulator app artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: PulseWatch-simulator-app
+          path: build/artifacts/PulseWatch-simulator-app.zip
