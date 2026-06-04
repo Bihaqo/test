@@ -3,53 +3,152 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Живой 3D-ландшафт</title>
+    <title>HeyGen Talking Photo</title>
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
-    <main class="world-shell">
-      <canvas id="world" aria-label="Интерактивный 3D-ландшафт"></canvas>
+    <main class="app-shell">
+      <section class="workspace" aria-label="Генератор говорящего фото">
+        <div class="brand-panel">
+          <p class="eyebrow">HeyGen API Studio</p>
+          <h1>Говорящее фото</h1>
+          <p class="lead">Загрузите портрет, добавьте текст и получите MP4 с синхронизацией губ.</p>
 
-      <section class="hud" aria-label="Панель управления">
-        <div class="stat">
-          <span>Высота</span>
-          <strong id="altitude">0 м</strong>
+          <form id="generator-form" class="generator-form">
+            <label class="dropzone" id="dropzone">
+              <input id="image-input" name="image" type="file" accept="image/png,image/jpeg,image/webp" />
+              <span class="dropzone-title">Выберите изображение</span>
+              <span class="dropzone-copy">PNG, JPG или WEBP до 32 MB</span>
+            </label>
+
+            <label class="field">
+              <span>Текст для озвучки</span>
+              <textarea
+                id="script"
+                name="script"
+                rows="6"
+                maxlength="4000"
+                placeholder="Привет! Это видео создано из одной фотографии через HeyGen API."
+                required
+              ></textarea>
+            </label>
+
+            <div class="field-grid">
+              <label class="field">
+                <span>Voice ID</span>
+                <input id="voice-id" name="voiceId" type="text" placeholder="Например: 1bd001..." required />
+              </label>
+
+              <label class="field">
+                <span>Название</span>
+                <input id="title" name="title" type="text" value="Talking photo" maxlength="120" />
+              </label>
+            </div>
+
+            <label class="field">
+              <span>API backend URL</span>
+              <input id="api-base-url" type="url" placeholder="https://your-backend.example.com" />
+            </label>
+
+            <div class="settings-grid">
+              <label class="field">
+                <span>Формат</span>
+                <select id="aspect-ratio" name="aspectRatio">
+                  <option value="auto">Auto</option>
+                  <option value="16:9">16:9</option>
+                  <option value="9:16">9:16</option>
+                  <option value="1:1">1:1</option>
+                  <option value="4:5">4:5</option>
+                </select>
+              </label>
+
+              <label class="field">
+                <span>Разрешение</span>
+                <select id="resolution" name="resolution">
+                  <option value="1080p">1080p</option>
+                  <option value="720p">720p</option>
+                  <option value="4k">4K</option>
+                </select>
+              </label>
+
+              <label class="field">
+                <span>Кадрирование</span>
+                <select id="fit" name="fit">
+                  <option value="contain">Contain</option>
+                  <option value="cover">Cover</option>
+                </select>
+              </label>
+
+              <label class="field">
+                <span>Эмоции</span>
+                <select id="expressiveness" name="expressiveness">
+                  <option value="low">Low</option>
+                  <option value="medium">Medium</option>
+                  <option value="high">High</option>
+                </select>
+              </label>
+            </div>
+
+            <label class="field">
+              <span>Движение</span>
+              <input
+                id="motion-prompt"
+                name="motionPrompt"
+                type="text"
+                placeholder="Например: natural head movement, friendly smile"
+              />
+            </label>
+
+            <div class="range-grid">
+              <label class="range-field">
+                <span>Скорость</span>
+                <input id="speed" name="speed" type="range" min="0.5" max="2" step="0.05" value="1" />
+                <strong id="speed-value">1.00x</strong>
+              </label>
+
+              <label class="range-field">
+                <span>Pitch</span>
+                <input id="pitch" name="pitch" type="range" min="-12" max="12" step="1" value="0" />
+                <strong id="pitch-value">0</strong>
+              </label>
+            </div>
+
+            <button id="submit-button" class="primary-button" type="submit">Создать видео</button>
+          </form>
         </div>
-        <div class="stat">
-          <span>Скорость</span>
-          <strong id="speed">0</strong>
-        </div>
-        <div class="stat">
-          <span>Онлайн</span>
-          <strong id="online">1</strong>
-        </div>
-        <button id="regen" type="button" title="Сгенерировать новый ландшафт">↻</button>
+
+        <aside class="result-panel" aria-label="Результат">
+          <div class="preview-stage">
+            <img id="image-preview" alt="Предпросмотр портрета" hidden />
+            <div id="empty-preview" class="empty-preview">Портрет появится здесь</div>
+          </div>
+
+          <div class="status-card">
+            <div>
+              <span class="status-label">Статус</span>
+              <strong id="status-text">Готов к запуску</strong>
+            </div>
+            <div class="status-dot" id="status-dot"></div>
+          </div>
+
+          <video id="result-video" controls playsinline hidden></video>
+
+          <div class="actions">
+            <a id="download-link" class="secondary-button" href="#" target="_blank" rel="noreferrer" hidden>
+              Открыть MP4
+            </a>
+            <button id="voices-button" class="secondary-button" type="button">Загрузить голоса</button>
+          </div>
+
+          <div id="voices-list" class="voices-list" hidden></div>
+
+          <p id="key-warning" class="warning" hidden>
+            HEYGEN_API_KEY не найден. Добавьте ключ в .env и перезапустите сервер.
+          </p>
+        </aside>
       </section>
-
-      <button id="enter" class="enter" type="button">Войти в мир</button>
-
-      <div id="crosshair" class="crosshair" hidden></div>
-
-      <div id="animal-menu" class="animal-menu" hidden>
-        <button id="export-animal" type="button">Экспорт 3D</button>
-      </div>
-
-      <div class="mobile-pad" aria-label="Движение">
-        <button type="button" data-move="forward">▲</button>
-        <button type="button" data-move="left">◀</button>
-        <button type="button" data-move="backward">▼</button>
-        <button type="button" data-move="right">▶</button>
-      </div>
     </main>
 
-    <script type="importmap">
-      {
-        "imports": {
-          "three": "https://unpkg.com/three@0.165.0/build/three.module.js",
-          "three/addons/": "https://unpkg.com/three@0.165.0/examples/jsm/"
-        }
-      }
-    </script>
-    <script type="module" src="./main.js"></script>
+    <script src="./main.js" defer></script>
   </body>
 </html>

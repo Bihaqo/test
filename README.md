@@ -1,17 +1,48 @@
-# PulseWatch
+# HeyGen Talking Photo Studio
 
-PulseWatch is a small native SwiftUI iPhone app that presents a watch-style face plus a simple stopwatch.
+Небольшой сайт на Node.js, который загружает изображение в HeyGen Assets, запускает генерацию image-to-video через HeyGen API и показывает готовый MP4 после рендера.
 
-## Local macOS Build
+## Запуск
 
-Install XcodeGen, generate the Xcode project, then build or run the app in Xcode:
+1. Перевыпустите HeyGen API key, если старый ключ уже был отправлен в чат или commit.
+2. Создайте `.env` рядом с `server.js`:
 
 ```sh
-brew install xcodegen
-xcodegen generate
-open PulseWatch.xcodeproj
+cp .env.example .env
 ```
 
-## GitHub Actions Build
+3. Вставьте новый ключ:
 
-The `iOS Build` workflow runs on a macOS runner, generates the Xcode project, builds the app for the generic iOS Simulator destination with code signing disabled, and uploads a zipped simulator `.app` artifact. It is intentionally build/test validation, not an interactive simulator session or a signed physical-device install.
+```env
+HEYGEN_API_KEY=your_new_heygen_api_key
+PORT=5173
+```
+
+4. Запустите сайт:
+
+```sh
+npm start
+```
+
+Откройте `http://127.0.0.1:5173`.
+
+## Как пользоваться
+
+Загрузите PNG, JPG или WEBP до 32 MB, введите текст и `Voice ID`, затем нажмите `Создать видео`. Voice ID можно выбрать через кнопку `Загрузить голоса`, если ваш тариф HeyGen разрешает список голосов через API.
+
+## GitHub Pages
+
+GitHub Pages хостит только статические файлы из папки `site`. HeyGen API key нельзя хранить на GitHub Pages или в браузерном JavaScript, поэтому Node backend из `server.js` нужно разместить отдельно: Render, Railway, Fly.io, VPS или другой Node-хостинг.
+
+Workflow `.github/workflows/pages.yml` публикует сайт на Pages после push в `main` или `master`. После деплоя откройте опубликованный сайт и укажите `API backend URL`, например:
+
+```text
+https://your-node-backend.example.com
+```
+
+Для backend-хостинга задайте переменные:
+
+```env
+HEYGEN_API_KEY=your_new_heygen_api_key
+ALLOWED_ORIGIN=https://bihaqo.github.io
+```
