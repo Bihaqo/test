@@ -1,0 +1,225 @@
+:root {
+  color-scheme: dark;
+  font-family:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  background: #050806;
+  color: #f5f7ef;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+.world-shell {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+body {
+  min-height: 100vh;
+}
+
+#world {
+  display: block;
+  width: 100vw;
+  height: 100vh;
+  background: #75a8d8;
+  cursor: crosshair;
+}
+
+.hud {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  border: 1px solid rgb(255 255 255 / 0.2);
+  border-radius: 8px;
+  background: rgb(8 13 11 / 0.72);
+  box-shadow: 0 18px 48px rgb(0 0 0 / 0.28);
+  backdrop-filter: blur(14px);
+}
+
+.stat {
+  min-width: 86px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  background: rgb(255 255 255 / 0.08);
+}
+
+.stat span {
+  display: block;
+  margin-bottom: 2px;
+  color: #cfd9c4;
+  font-size: 11px;
+  line-height: 1.2;
+}
+
+.stat strong {
+  display: block;
+  color: #fffef4;
+  font-size: 15px;
+  line-height: 1.2;
+}
+
+button {
+  border: 0;
+  border-radius: 8px;
+  color: #fffef4;
+  background: rgb(25 95 80 / 0.9);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+button:hover {
+  background: rgb(34 122 102 / 0.96);
+}
+
+#regen {
+  width: 42px;
+  height: 42px;
+  font-size: 22px;
+  line-height: 1;
+}
+
+.enter {
+  position: fixed;
+  left: 50%;
+  bottom: 28px;
+  min-width: min(280px, calc(100vw - 32px));
+  min-height: 48px;
+  transform: translateX(-50%);
+  border: 1px solid rgb(255 255 255 / 0.22);
+  background: rgb(216 87 46 / 0.96);
+  box-shadow: 0 18px 52px rgb(0 0 0 / 0.34);
+}
+
+.enter:hover {
+  background: rgb(235 103 60 / 0.98);
+}
+
+.crosshair {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  z-index: 3;
+  width: 18px;
+  height: 18px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.crosshair::before,
+.crosshair::after {
+  position: absolute;
+  content: "";
+  background: rgb(255 254 244 / 0.86);
+  box-shadow: 0 1px 4px rgb(0 0 0 / 0.42);
+}
+
+.crosshair::before {
+  left: 8px;
+  top: 0;
+  width: 2px;
+  height: 18px;
+}
+
+.crosshair::after {
+  left: 0;
+  top: 8px;
+  width: 18px;
+  height: 2px;
+}
+
+.animal-menu {
+  position: fixed;
+  z-index: 4;
+  min-width: 148px;
+  padding: 6px;
+  border: 1px solid rgb(255 255 255 / 0.22);
+  border-radius: 8px;
+  background: rgb(8 13 11 / 0.82);
+  box-shadow: 0 18px 48px rgb(0 0 0 / 0.32);
+  backdrop-filter: blur(14px);
+}
+
+.animal-menu button {
+  width: 100%;
+  min-height: 38px;
+  padding: 0 12px;
+  text-align: left;
+  background: rgb(194 31 104 / 0.92);
+}
+
+.animal-menu button:hover {
+  background: rgb(221 52 128 / 0.98);
+}
+
+.mobile-pad {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  display: none;
+  grid-template-columns: repeat(3, 48px);
+  grid-template-rows: repeat(3, 48px);
+  gap: 6px;
+}
+
+.mobile-pad button {
+  width: 48px;
+  height: 48px;
+  border: 1px solid rgb(255 255 255 / 0.2);
+  background: rgb(8 13 11 / 0.64);
+  backdrop-filter: blur(10px);
+}
+
+.mobile-pad [data-move="forward"] {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.mobile-pad [data-move="left"] {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.mobile-pad [data-move="backward"] {
+  grid-column: 2;
+  grid-row: 3;
+}
+
+.mobile-pad [data-move="right"] {
+  grid-column: 3;
+  grid-row: 2;
+}
+
+@media (pointer: coarse) {
+  .mobile-pad {
+    display: grid;
+  }
+
+  .enter {
+    bottom: 192px;
+  }
+}
+
+@media (max-width: 560px) {
+  .hud {
+    top: 10px;
+    left: 10px;
+    max-width: calc(100vw - 20px);
+  }
+
+  .stat {
+    min-width: 72px;
+  }
+}

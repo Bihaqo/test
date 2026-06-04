@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Живой 3D-ландшафт</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="world-shell">
+      <canvas id="world" aria-label="Интерактивный 3D-ландшафт"></canvas>
+
+      <section class="hud" aria-label="Панель управления">
+        <div class="stat">
+          <span>Высота</span>
+          <strong id="altitude">0 м</strong>
+        </div>
+        <div class="stat">
+          <span>Скорость</span>
+          <strong id="speed">0</strong>
+        </div>
+        <div class="stat">
+          <span>Онлайн</span>
+          <strong id="online">1</strong>
+        </div>
+        <button id="regen" type="button" title="Сгенерировать новый ландшафт">↻</button>
+      </section>
+
+      <button id="enter" class="enter" type="button">Войти в мир</button>
+
+      <div id="crosshair" class="crosshair" hidden></div>
+
+      <div id="animal-menu" class="animal-menu" hidden>
+        <button id="export-animal" type="button">Экспорт 3D</button>
+      </div>
+
+      <div class="mobile-pad" aria-label="Движение">
+        <button type="button" data-move="forward">▲</button>
+        <button type="button" data-move="left">◀</button>
+        <button type="button" data-move="backward">▼</button>
+        <button type="button" data-move="right">▶</button>
+      </div>
+    </main>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.165.0/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@0.165.0/examples/jsm/"
+        }
+      }
+    </script>
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>
